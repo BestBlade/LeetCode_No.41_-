@@ -1,4 +1,4 @@
-﻿/* ------------------------------------------------------------------|
+/* ------------------------------------------------------------------|
 给你一个未排序的整数数组，请你找出其中没有出现的最小的正整数。
 
 
@@ -26,8 +26,8 @@
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。|
 ------------------------------------------------------------------*/
 
-/*	递归方法
-*
+/*	排序方法				
+*	时间复杂度为O(nlogn)，不满足题目要求
 *	执行用时：4 ms, 在所有 C++ 提交中击败了60.43%的用户
 *	内存消耗：9.7 MB, 在所有 C++ 提交中击败了18.54%的用户
 */
@@ -51,21 +51,19 @@ int firstMissingPositive(vector<int>& nums)
 	}
 	if (len == 1)
 	{
-		if (nums[0] == 1)
-		{
-			return 2;
-		}
-		return 1;
+		return (nums[0] == 1) ? 2 : 1;
 	} 
 
 	sort(nums.begin(), nums.end());
+
+
 	if (nums[0] > 1)
 	{
 		return 1;
 	}
 
 	for (int i = 0; i < len; i++)
-	{ 
+	{
 		if (nums[i] <= 0)
 		{
 			continue;
@@ -74,13 +72,17 @@ int firstMissingPositive(vector<int>& nums)
 		{
 			if (i == len - 1)
 			{
+				if (nums[i] > 1 && nums[i - 1] <= 0)
+				{
+					return 1;
+				}
 				return nums[i] + 1;
 			}
-			if (nums[i] > 1 && nums[i-1] <= 0)
+			if (nums[i] > 1 && nums[i - 1] <= 0)
 			{
 				return 1;
 			}
-			if (nums[i] == nums[i + 1] - 1 || nums[i] == nums[i+1])
+			if (nums[i] == nums[i + 1] - 1 || nums[i] == nums[i + 1])
 			{
 				continue;
 			}
